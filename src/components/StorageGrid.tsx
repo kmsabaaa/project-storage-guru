@@ -4,9 +4,10 @@ import { StorageCard } from "./StorageCard";
 interface StorageGridProps {
   storages: Storage[];
   onStorageClick: (storage: Storage) => void;
+  onProjectAdd: (storageId: string, project: any) => void;
 }
 
-export const StorageGrid = ({ storages, onStorageClick }: StorageGridProps) => {
+export const StorageGrid = ({ storages, onStorageClick, onProjectAdd }: StorageGridProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {storages.map((storage) => (
@@ -14,6 +15,7 @@ export const StorageGrid = ({ storages, onStorageClick }: StorageGridProps) => {
           key={storage.id}
           storage={storage}
           onClick={() => onStorageClick(storage)}
+          onProjectAdd={onProjectAdd}
         />
       ))}
     </div>
