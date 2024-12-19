@@ -3,9 +3,8 @@ import { StorageGrid } from "@/components/StorageGrid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Storage, Project, ProjectType, ProjectPrivacy, ProjectStatus } from "@/types/storage";
-import { Select } from "@/components/ui/select";
 import {
-  Select as SelectPrimitive,
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -15,9 +14,9 @@ import {
 const Index = () => {
   const [storages, setStorages] = useState<Storage[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState<ProjectType | "">("");
-  const [filterPrivacy, setFilterPrivacy] = useState<ProjectPrivacy | "">("");
-  const [filterStatus, setFilterStatus] = useState<ProjectStatus | "">("");
+  const [filterType, setFilterType] = useState<ProjectType | "all">("all");
+  const [filterPrivacy, setFilterPrivacy] = useState<ProjectPrivacy | "all">("all");
+  const [filterStatus, setFilterStatus] = useState<ProjectStatus | "all">("all");
   const [showArchive, setShowArchive] = useState(false);
 
   const handleStorageClick = (storage: Storage) => {
@@ -39,12 +38,10 @@ const Index = () => {
   };
 
   const filteredStorages = storages.filter((storage) => {
-    // Filter by archive status
     if (showArchive !== storage.archived) {
       return false;
     }
 
-    // Search term filtering
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch =
       storage.name.toLowerCase().includes(searchLower) ||
@@ -58,18 +55,15 @@ const Index = () => {
       return false;
     }
 
-    // Project type filtering
-    if (filterType && !storage.projects.some((project) => project.type.includes(filterType))) {
+    if (filterType !== "all" && !storage.projects.some((project) => project.type.includes(filterType))) {
       return false;
     }
 
-    // Privacy filtering
-    if (filterPrivacy && !storage.projects.some((project) => project.privacy === filterPrivacy)) {
+    if (filterPrivacy !== "all" && !storage.projects.some((project) => project.privacy === filterPrivacy)) {
       return false;
     }
 
-    // Status filtering
-    if (filterStatus && !storage.projects.some((project) => project.status === filterStatus)) {
+    if (filterStatus !== "all" && !storage.projects.some((project) => project.status === filterStatus)) {
       return false;
     }
 
@@ -99,12 +93,12 @@ const Index = () => {
               className="w-full"
             />
 
-            <SelectPrimitive onValueChange={(value) => setFilterType(value as ProjectType)} value={filterType}>
+            <Select value={filterType} onValueChange={(value: ProjectType | "all") => setFilterType(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="Coverage">Coverage</SelectItem>
                 <SelectItem value="Advertisement">Advertisement</SelectItem>
                 <SelectItem value="Documentary">Documentary</SelectItem>
@@ -113,32 +107,32 @@ const Index = () => {
                 <SelectItem value="Photography">Photography</SelectItem>
                 <SelectItem value="Talking Head">Talking Head</SelectItem>
               </SelectContent>
-            </SelectPrimitive>
+            </Select>
 
-            <SelectPrimitive onValueChange={(value) => setFilterPrivacy(value as ProjectPrivacy)} value={filterPrivacy}>
+            <Select value={filterPrivacy} onValueChange={(value: ProjectPrivacy | "all") => setFilterPrivacy(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by Privacy" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Privacy Levels</SelectItem>
+                <SelectItem value="all">All Privacy Levels</SelectItem>
                 <SelectItem value="Private">Private</SelectItem>
                 <SelectItem value="Public">Public</SelectItem>
                 <SelectItem value="Closed Meeting Only">Closed Meeting Only</SelectItem>
               </SelectContent>
-            </SelectPrimitive>
+            </Select>
 
-            <SelectPrimitive onValueChange={(value) => setFilterStatus(value as ProjectStatus)} value={filterStatus}>
+            <Select value={filterStatus} onValueChange={(value: ProjectStatus | "all") => setFilterStatus(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="Submitted">Submitted</SelectItem>
                 <SelectItem value="Pending">Pending</SelectItem>
                 <SelectItem value="Not Started">Not Started</SelectItem>
                 <SelectItem value="Canceled">Canceled</SelectItem>
               </SelectContent>
-            </SelectPrimitive>
+            </Select>
           </div>
         </div>
 
