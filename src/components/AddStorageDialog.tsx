@@ -29,6 +29,7 @@ export const AddStorageDialog = ({ onStorageAdd }: AddStorageDialogProps) => {
       ...formData,
       capacity: Number(formData.capacity),
       projects: [],
+      archived: false, // Add the archived property
     };
     onStorageAdd(newStorage);
     setOpen(false);

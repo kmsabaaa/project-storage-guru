@@ -116,7 +116,7 @@ export const AddProjectDialog = ({ storageId, onProjectAdd }: AddProjectDialogPr
           <div>
             <Label htmlFor="type">Project Type</Label>
             <Select
-              value={formData.type[0]}
+              value={formData.type[0] || "Coverage"}
               onValueChange={(value: ProjectType) => 
                 setFormData({ ...formData, type: [...formData.type, value] })
               }
