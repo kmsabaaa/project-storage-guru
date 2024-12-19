@@ -3,6 +3,7 @@ import { StorageGrid } from "@/components/StorageGrid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Storage, Project, ProjectType, ProjectPrivacy, ProjectStatus } from "@/types/storage";
+import { AddStorageDialog } from "@/components/AddStorageDialog";
 import {
   Select,
   SelectContent,
@@ -35,6 +36,10 @@ const Index = () => {
         return storage;
       })
     );
+  };
+
+  const handleStorageAdd = (storage: Storage) => {
+    setStorages([...storages, storage]);
   };
 
   const filteredStorages = storages.filter((storage) => {
@@ -76,13 +81,15 @@ const Index = () => {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h1 className="text-4xl font-bold text-primary">Storage Manager</h1>
-            <Button
-              variant="outline"
-              onClick={() => setShowArchive(!showArchive)}
-              className="ml-2"
-            >
-              {showArchive ? "Show Active" : "Show Archive"}
-            </Button>
+            <div className="flex gap-2">
+              <AddStorageDialog onStorageAdd={handleStorageAdd} />
+              <Button
+                variant="outline"
+                onClick={() => setShowArchive(!showArchive)}
+              >
+                {showArchive ? "Show Active" : "Show Archive"}
+              </Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
