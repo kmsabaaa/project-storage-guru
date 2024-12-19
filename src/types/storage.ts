@@ -33,4 +33,5 @@ export interface Storage {
   purchaseDate: string;
   type: StorageType;
   projects: Project[];
+  archived: boolean;
 }
