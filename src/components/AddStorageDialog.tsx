@@ -26,11 +26,15 @@ export const AddStorageDialog = ({ onStorageAdd }: AddStorageDialogProps) => {
     e.preventDefault();
     const newStorage: Storage = {
       id: crypto.randomUUID(),
-      ...formData,
+      name: formData.name,
       capacity: Number(formData.capacity),
+      manufacturer: formData.manufacturer,
+      type: formData.type,
+      purchaseDate: formData.purchaseDate,
       projects: [],
-      archived: false, // Add the archived property
+      archived: false,
     };
+    
     onStorageAdd(newStorage);
     setOpen(false);
     toast({
