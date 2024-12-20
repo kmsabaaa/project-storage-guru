@@ -121,28 +121,7 @@ export const StorageCard = ({
             <span className="text-destructive">{usedSpace.toFixed(1)} GB used</span>
           </div>
           <div className="mt-4">
-            <h4 className="font-semibold mb-2">Projects ({storage.projects.length})</h4>
-            <div className="space-y-2">
-              {storage.projects.map((project) => (
-                <div key={project.id} className="text-sm p-2 bg-muted rounded-md">
-                  <div className="flex justify-between">
-                    <span className="font-medium">{project.name}</span>
-                    <span>{project.size}GB</span>
-                  </div>
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>{project.clientName}</span>
-                    <span>{project.status}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {project.type.map((type) => (
-                      <Badge key={type} variant="outline" className="text-xs">
-                        {type}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h4 className="font-semibold mb-2">Projects: {storage.projects.length}</h4>
           </div>
         </div>
       </CardContent>
