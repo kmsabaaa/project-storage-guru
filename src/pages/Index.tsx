@@ -1,8 +1,9 @@
 import { StorageGrid } from "@/components/StorageGrid";
-import { Storage, Project, ProjectType, ProjectPrivacy, ProjectStatus } from "@/types/storage";
+import { Storage, Project } from "@/types/storage";
 import { useState } from "react";
 import { StorageFilters } from "@/components/StorageFilters";
 import { StorageHeader } from "@/components/StorageHeader";
+import { StorageStats } from "@/components/StorageStats";
 
 interface IndexProps {
   storages: Storage[];
@@ -20,9 +21,9 @@ const Index = ({
   onProjectAdd 
 }: IndexProps) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState<ProjectType | "all">("all");
-  const [filterPrivacy, setFilterPrivacy] = useState<ProjectPrivacy | "all">("all");
-  const [filterStatus, setFilterStatus] = useState<ProjectStatus | "all">("all");
+  const [filterType, setFilterType] = useState<"all">("all");
+  const [filterPrivacy, setFilterPrivacy] = useState<"all">("all");
+  const [filterStatus, setFilterStatus] = useState<"all">("all");
   const [showArchive, setShowArchive] = useState(false);
 
   const filteredStorages = storages.filter((storage) => {
@@ -66,6 +67,7 @@ const Index = ({
           setShowArchive={setShowArchive}
           onStorageAdd={onStorageAdd}
         />
+        <StorageStats storages={storages} />
         <StorageFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
