@@ -7,14 +7,13 @@ interface StorageGridProps {
   onProjectAdd: (storageId: string, project: any) => void;
 }
 
-export const StorageGrid = ({ storages, onStorageClick, onProjectAdd }: StorageGridProps) => {
+export const StorageGrid = ({ storages, onProjectAdd }: StorageGridProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {storages.map((storage) => (
         <StorageCard
           key={storage.id}
           storage={storage}
-          onClick={() => onStorageClick(storage)}
           onProjectAdd={onProjectAdd}
         />
       ))}
