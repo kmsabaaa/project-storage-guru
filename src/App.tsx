@@ -32,6 +32,20 @@ const App = () => {
     saveStorages(newStorages);
   };
 
+  const handleStorageEdit = (updatedStorage: Storage) => {
+    const newStorages = storages.map((storage) =>
+      storage.id === updatedStorage.id ? updatedStorage : storage
+    );
+    setStorages(newStorages);
+    saveStorages(newStorages);
+  };
+
+  const handleStorageDelete = (storageId: string) => {
+    const newStorages = storages.filter((storage) => storage.id !== storageId);
+    setStorages(newStorages);
+    saveStorages(newStorages);
+  };
+
   const handleProjectAdd = (storageId: string, project: Project) => {
     const newStorages = storages.map((storage) => {
       if (storage.id === storageId) {
@@ -99,6 +113,8 @@ const App = () => {
                 <Index 
                   storages={storages} 
                   onStorageAdd={handleStorageAdd}
+                  onStorageEdit={handleStorageEdit}
+                  onStorageDelete={handleStorageDelete}
                   onProjectAdd={handleProjectAdd}
                 />
               } 

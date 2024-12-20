@@ -7,10 +7,18 @@ import { StorageHeader } from "@/components/StorageHeader";
 interface IndexProps {
   storages: Storage[];
   onStorageAdd: (storage: Storage) => void;
+  onStorageEdit: (storage: Storage) => void;
+  onStorageDelete: (storageId: string) => void;
   onProjectAdd: (storageId: string, project: Project) => void;
 }
 
-const Index = ({ storages, onStorageAdd, onProjectAdd }: IndexProps) => {
+const Index = ({ 
+  storages, 
+  onStorageAdd, 
+  onStorageEdit,
+  onStorageDelete,
+  onProjectAdd 
+}: IndexProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState<ProjectType | "all">("all");
   const [filterPrivacy, setFilterPrivacy] = useState<ProjectPrivacy | "all">("all");
@@ -71,6 +79,8 @@ const Index = ({ storages, onStorageAdd, onProjectAdd }: IndexProps) => {
         <StorageGrid
           storages={filteredStorages}
           onProjectAdd={onProjectAdd}
+          onStorageDelete={onStorageDelete}
+          onStorageEdit={onStorageEdit}
         />
       </div>
     </div>
