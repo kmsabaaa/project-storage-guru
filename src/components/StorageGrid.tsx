@@ -3,7 +3,6 @@ import { StorageCard } from "./StorageCard";
 
 interface StorageGridProps {
   storages: Storage[];
-  onStorageClick: (storage: Storage) => void;
   onProjectAdd: (storageId: string, project: any) => void;
 }
 
