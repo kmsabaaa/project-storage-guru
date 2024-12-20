@@ -1,16 +1,8 @@
 import { StorageGrid } from "@/components/StorageGrid";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Storage, Project, ProjectType, ProjectPrivacy, ProjectStatus } from "@/types/storage";
-import { AddStorageDialog } from "@/components/AddStorageDialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
+import { StorageFilters } from "@/components/StorageFilters";
+import { StorageHeader } from "@/components/StorageHeader";
 
 interface IndexProps {
   storages: Storage[];
@@ -24,18 +16,6 @@ const Index = ({ storages, onStorageAdd, onProjectAdd }: IndexProps) => {
   const [filterPrivacy, setFilterPrivacy] = useState<ProjectPrivacy | "all">("all");
   const [filterStatus, setFilterStatus] = useState<ProjectStatus | "all">("all");
   const [showArchive, setShowArchive] = useState(false);
-
-  const handleStorageClick = (storage: Storage) => {
-    console.log("Storage clicked:", storage);
-  };
-
-  const handleProjectAdd = (storageId: string, project: Project) => {
-    onProjectAdd(storageId, project);
-  };
-
-  const handleStorageAdd = (storage: Storage) => {
-    onStorageAdd(storage);
-  };
 
   const filteredStorages = storages.filter((storage) => {
     if (showArchive !== storage.archived) {
@@ -73,75 +53,24 @@ const Index = ({ storages, onStorageAdd, onProjectAdd }: IndexProps) => {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-4xl font-bold text-primary">Storage Manager</h1>
-            <div className="flex gap-2">
-              <AddStorageDialog onStorageAdd={handleStorageAdd} />
-              <Button
-                variant="outline"
-                onClick={() => setShowArchive(!showArchive)}
-              >
-                {showArchive ? "Show Active" : "Show Archive"}
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Input
-              placeholder="Search storages and projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full"
-            />
-
-            <Select value={filterType} onValueChange={(value: ProjectType | "all") => setFilterType(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="Coverage">Coverage</SelectItem>
-                <SelectItem value="Advertisement">Advertisement</SelectItem>
-                <SelectItem value="Documentary">Documentary</SelectItem>
-                <SelectItem value="Product Review">Product Review</SelectItem>
-                <SelectItem value="TV-Show">TV Show</SelectItem>
-                <SelectItem value="Photography">Photography</SelectItem>
-                <SelectItem value="Talking Head">Talking Head</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={filterPrivacy} onValueChange={(value: ProjectPrivacy | "all") => setFilterPrivacy(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by Privacy" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Privacy Levels</SelectItem>
-                <SelectItem value="Private">Private</SelectItem>
-                <SelectItem value="Public">Public</SelectItem>
-                <SelectItem value="Closed Meeting Only">Closed Meeting Only</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={filterStatus} onValueChange={(value: ProjectStatus | "all") => setFilterStatus(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Submitted">Submitted</SelectItem>
-                <SelectItem value="Pending">Pending</SelectItem>
-                <SelectItem value="Not Started">Not Started</SelectItem>
-                <SelectItem value="Canceled">Canceled</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
+        <StorageHeader
+          showArchive={showArchive}
+          setShowArchive={setShowArchive}
+          onStorageAdd={onStorageAdd}
+        />
+        <StorageFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          filterType={filterType}
+          setFilterType={setFilterType}
+          filterPrivacy={filterPrivacy}
+          setFilterPrivacy={setFilterPrivacy}
+          filterStatus={filterStatus}
+          setFilterStatus={setFilterStatus}
+        />
         <StorageGrid
           storages={filteredStorages}
-          onStorageClick={handleStorageClick}
-          onProjectAdd={handleProjectAdd}
+          onProjectAdd={onProjectAdd}
         />
       </div>
     </div>

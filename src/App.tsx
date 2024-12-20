@@ -8,6 +8,7 @@ import StorageDetails from "./pages/StorageDetails";
 import { useState, useEffect } from "react";
 import { Storage, Project } from "@/types/storage";
 import { loadStorages, saveStorages } from "./utils/localStorage";
+import { generateDummyData } from "./utils/dummyData";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,13 @@ const App = () => {
 
   useEffect(() => {
     const loadedStorages = loadStorages();
-    setStorages(loadedStorages);
+    if (loadedStorages.length === 0) {
+      const dummyData = generateDummyData();
+      setStorages(dummyData);
+      saveStorages(dummyData);
+    } else {
+      setStorages(loadedStorages);
+    }
   }, []);
 
   const handleStorageAdd = (storage: Storage) => {
