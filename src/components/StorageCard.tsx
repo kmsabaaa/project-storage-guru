@@ -4,20 +4,24 @@ import { Storage } from "@/types/storage";
 import { HardDrive, Archive } from "lucide-react";
 import { AddProjectDialog } from "./AddProjectDialog";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface StorageCardProps {
   storage: Storage;
-  onClick: () => void;
   onProjectAdd: (storageId: string, project: any) => void;
 }
 
-export const StorageCard = ({ storage, onClick, onProjectAdd }: StorageCardProps) => {
+export const StorageCard = ({ storage, onProjectAdd }: StorageCardProps) => {
+  const navigate = useNavigate();
   const usedSpace = storage.projects.reduce((acc, project) => acc + project.size, 0);
   const freeSpace = storage.capacity - usedSpace;
   const usagePercentage = (usedSpace / storage.capacity) * 100;
 
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card 
+      className="hover:shadow-lg transition-shadow cursor-pointer" 
+      onClick={() => navigate(`/storage/${storage.id}`)}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex items-center gap-2">
           <CardTitle className="text-xl font-bold">{storage.name}</CardTitle>
@@ -32,7 +36,6 @@ export const StorageCard = ({ storage, onClick, onProjectAdd }: StorageCardProps
           <AddProjectDialog storageId={storage.id} onProjectAdd={onProjectAdd} />
           <HardDrive
             className={`w-6 h-6 ${storage.type === "SSD" ? "text-accent" : "text-secondary"}`}
-            onClick={onClick}
           />
         </div>
       </CardHeader>

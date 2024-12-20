@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { StorageGrid } from "@/components/StorageGrid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,9 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useState } from "react";
 
-const Index = () => {
-  const [storages, setStorages] = useState<Storage[]>([]);
+interface IndexProps {
+  storages: Storage[];
+  onStorageAdd: (storage: Storage) => void;
+  onProjectAdd: (storageId: string, project: Project) => void;
+}
+
+const Index = ({ storages, onStorageAdd, onProjectAdd }: IndexProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState<ProjectType | "all">("all");
   const [filterPrivacy, setFilterPrivacy] = useState<ProjectPrivacy | "all">("all");
@@ -25,21 +30,11 @@ const Index = () => {
   };
 
   const handleProjectAdd = (storageId: string, project: Project) => {
-    setStorages(
-      storages.map((storage) => {
-        if (storage.id === storageId) {
-          return {
-            ...storage,
-            projects: [...storage.projects, project],
-          };
-        }
-        return storage;
-      })
-    );
+    onProjectAdd(storageId, project);
   };
 
   const handleStorageAdd = (storage: Storage) => {
-    setStorages([...storages, storage]);
+    onStorageAdd(storage);
   };
 
   const filteredStorages = storages.filter((storage) => {
